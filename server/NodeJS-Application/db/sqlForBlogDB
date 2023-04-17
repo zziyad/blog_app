@@ -1,0 +1,81 @@
+drop table "User";
+
+CREATE TABLE "User" (
+  userId bigint generated always as identity PRIMARY KEY,
+  username varchar(64) NOT NULL,
+  email varchar(64) NOT NULL,
+  password varchar(64) NOT NULL,
+  img varchar
+);
+
+-- ALTER TABLE "User" ADD CONSTRAINT "pkUser" PRIMARY KEY ("userId");
+-- CREATE UNIQUE INDEX "akUserUsername" ON "User" ("username");
+-- CREATE UNIQUE INDEX "akUserEmail" ON "User" ("email");
+
+
+-- drop table "Post";
+CREATE TABLE "Post" (
+  postId bigint generated always as identity PRIMARY KEY,
+  title varchar NOT NULL,
+  "descr" varchar NOT NULL,
+  img varchar NOT NULL,
+  date date NOT NULL,
+  category varchar,
+  uid bigint REFERENCES "User" (userId) ON DELETE CASCADE
+);
+
+
+-- ALTER TABLE Post
+-- 	ADD FOREIGN KEY (userId)
+-- 	REFERENCES User (userId)
+-- 	ON DELETE CASCADE;
+
+
+
+-- drop table "teams";
+
+
+INSERT INTO "User" (username, email, password, img ) VALUES
+  ('test', 'test@gmail.com', 'test', 'NULL'),
+  ('test2', 'test2@gmail.com', 'test2', 'NULL');
+
+INSERT INTO "Post" (title, "desc", img, date, uid) VALUES
+    ('test', 'test', 'NULL', '06.03.2023', '1'),
+	('test2', 'test2', 'NULL', '05.03.2023', '2');
+
+
+
+
+
+CREATE TABLE "teams" (
+id SERIAL PRIMARY KEY,
+team_count INTEGER,
+department VARCHAR (100)
+);
+
+
+
+CREATE TABLE "developers" (
+developer_id INTEGER NOT NULL,
+team_id INTEGER REFERENCES teams (id) ON DELETE CASCADE,
+name VARCHAR (100),
+position VARCHAR (100),
+technology VARCHAR (100),
+PRIMARY KEY (developer_id,team_id)
+);
+	
+INSERT INTO teams (id, team_count, department) VALUES
+('1','5','Accounting'),
+('2','6','Inventory'),
+('3','5','Human Resource'),
+('4','7','CRM'),
+('5','9','Bug Solver'),
+('6','4','Document');
+
+
+INSERT INTO developers (developer_id, team_id, name, position, technology) VALUES
+('1','2','Payal','senior SD','Java'),
+('2','1','Heena','Developer','Angular'),
+('3','2','Sayali','Developer','Hibernate'),
+('4','3','Rahul','Support','Digital Marketing'),
+('5','3','Siddhesh','Tester','Maven');
