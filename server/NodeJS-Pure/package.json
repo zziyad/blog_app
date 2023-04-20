@@ -14,7 +14,6 @@
     "node": "16 || 18 || 19"
   },
   "dependencies": {
-    "jszip": "^3.10.1",
     "metasql": "^2.1.4",
     "metautil": "^3.7.1",
     "pg": "^8.8.0",

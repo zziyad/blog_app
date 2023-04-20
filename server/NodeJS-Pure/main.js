@@ -2,9 +2,9 @@
 
 const path = require('node:path');
 
+const { node, npm, metarhia } = require('./src/dependencies.js');
 const logger = require('./lib/logger.js');
 const common = require('./lib/common.js');
-const { node, npm, metarhia } = require('./src/dependencies.js');
 
 const { loadDir } = require('./src/loader.js');
 const { Server } = require('./src/server.js');
@@ -12,6 +12,8 @@ const { Server } = require('./src/server.js');
 const appPath = path.join(process.cwd(), '../NodeJS-Application');
 const apiPath = path.join(appPath, './api');
 const configPath = path.join(appPath, './config');
+const libPath = path.join(appPath, './lib');
+const domainPath = path.join(appPath, './domain');
 
 (async () => {
   const sandbox = {
@@ -28,6 +30,19 @@ const configPath = path.join(appPath, './config');
   sandbox.api = Object.freeze({});
   sandbox.db = Object.freeze(db);
   sandbox.config = config;
+
+  // const lib = await loadDir(libPath, sandbox);
+  // const domain = await loadDir(domainPath, sandbox);
+  await Promise.allSettled([
+    (async () => {
+      sandbox.lib = Object.freeze(await loadDir(libPath, sandbox));
+      sandbox.domain = Object.freeze(await loadDir(domainPath, sandbox));
+    })(),
+  ]);
+
+  // sandbox.lib = Object.freeze(await loadDir(libPath, sandbox));
+  // sandbox.domain = Object.freeze(await loadDir(domainPath, sandbox));
+
 
   const routing = await loadDir(apiPath, sandbox, true);
   const server = new Server(appPath, routing, logger);

@@ -29,14 +29,10 @@ class Context {
 }
 
 class Client extends EventEmitter {
-  #server;
   #transport;
-  #console;
 
   constructor(server, transport) {
     super();
-    this.#server = server;
-    this.#console = server.console;
     this.#transport = transport;
     this.ip = transport.ip;
     this.session = null;
@@ -134,7 +130,7 @@ class Server {
     const wsServer = new ws.Server({ server: this.httpServer });
     wsServer.on('connection', (connection, req) => {
       const transport = new WsTransport(console, req, connection);
-      const client = new Client(console, transport);
+      const client = new Client(transport);
 
       connection.on('message', (data) => {
         this.rpc(client, data);
@@ -169,17 +165,17 @@ class Server {
       return;
     }
     const context = client.createContext();
-    /* TODO: check rights
-     */
+    /* TODO: check rights */
     if (!client.session && proc().access !== 'public') {
       client.error(403, { id });
       return;
     }
-
     if (client.session) this.console.log({ clientSession: client.session });
     if (proc().access === 'public')
+
       this.console.log('Yo have not Admin access');
     this.console.log(`${client.ip}\t${packet.method}`);
+
     proc(context)
       .method(...packet.args)
       .then((result) => {
