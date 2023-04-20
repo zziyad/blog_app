@@ -67,7 +67,7 @@ const Single = () => {
   const postedDate = new Date(post.date).toString().substr(0, 21);
 
   return (
-  error.status === 'rejected' ? <div>{error.reason.code}</div> :
+  error.status === 'rejected' ? <h1 style={{textAlign:'center'}}><span style={{color:'red'}}>{error.reason.code}</span> - {error.reason.message}</h1> :
      <div className='single'>
        {/* { error ||  */}
        <div className='content'>
