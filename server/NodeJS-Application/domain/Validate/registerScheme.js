@@ -2,7 +2,7 @@ async (obj) => {
     const { Schema } = metarhia.metaschema;
     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
+
     const definition = {
       username: '?string',
       email: '?string',
@@ -23,6 +23,6 @@ async (obj) => {
       },
     }
     const schema = Schema.from(definition);
-    const checkValid = schema.check(obj);
-    return checkValid
+    const checkValidation = schema.check(obj);
+    return checkValidation
 };
