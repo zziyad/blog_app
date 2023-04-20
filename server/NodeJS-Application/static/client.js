@@ -14,6 +14,9 @@ const { api } = scaffolding;
   //   password: 'marcus',
   // });
   // console.log('f', { status, token, msg });
-  const data = await api.auth.signin({ username: 'marcus', password: 'marcus' });
+  const data = await api.auth.signin({
+    username: 'marcus',
+    password: 'marcus',
+  });
   console.dir({ data });
 })();

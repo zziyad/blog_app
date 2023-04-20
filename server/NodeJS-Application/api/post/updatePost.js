@@ -2,7 +2,6 @@
   access: 'public',
 
   method: async ({ postId, title, descr, image, category }) => {
-
     const { Database } = metarhia.metasql;
     const db = new Database(config.database);
     const imgPath = node.path.join(node.process.cwd(), `../../client/public`);
@@ -16,7 +15,12 @@
       await db.update(
         'Post',
         { title, descr, image, category },
-        { title: post[0].title, descr: post[0].descr, image: post[0].image, category: post[0].category }
+        {
+          title: post[0].title,
+          descr: post[0].descr,
+          image: post[0].image,
+          category: post[0].category,
+        },
       );
 
       // Delete the old image file if it exists

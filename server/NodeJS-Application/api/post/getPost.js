@@ -11,6 +11,6 @@
         status: 'rejected',
         reason: typeof error.toJSON === 'function' ? error.toJSON() : error,
       };
-    } 
+    }
   },
 });

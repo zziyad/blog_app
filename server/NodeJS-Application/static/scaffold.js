@@ -56,7 +56,7 @@ export class Scaffold {
       return;
     }
     console.log({ packet });
-    const [, callId , args] = Object.keys(packet);
+    const [, callId, args] = Object.keys(packet);
     const id = packet[callId];
     const result = packet[args];
     if (result) {
@@ -97,14 +97,19 @@ export class Scaffold {
   }
 
   socketCall(interfaceName) {
-    const unit = interfaceName
+    const unit = interfaceName;
     return (methodName) =>
       async (...args) => {
         const id = this.callId++;
         await this.ready();
         return new Promise((resolve, reject) => {
           this.calls.set(id, [resolve, reject]);
-          const packet = { type: 'call', id, method: `${unit}/${methodName}`, args };
+          const packet = {
+            type: 'call',
+            id,
+            method: `${unit}/${methodName}`,
+            args,
+          };
           this.socket.send(JSON.stringify(packet));
         });
       };
