@@ -172,7 +172,6 @@ class Server {
     }
     if (client.session) this.console.log({ clientSession: client.session });
     if (proc().access === 'public')
-
       this.console.log('Yo have not Admin access');
     this.console.log(`${client.ip}\t${packet.method}`);
 

@@ -48,9 +48,7 @@ node.asyncHooks = node['async_hooks'];
 node.worker = node['worker_threads'];
 node.fsp = node.fs.promises;
 
-const npm = {
-
-};
+const npm = {};
 
 const pkg = require(process.cwd() + '/package.json');
 
