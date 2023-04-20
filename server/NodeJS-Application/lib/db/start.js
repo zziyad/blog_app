@@ -1,21 +1,26 @@
-// async () => {
+async () => {
 //   if (application.worker.id === 'W1') {
-//     console.info('Connecting to pg...');
+    console.log('Connecting to pg...');
+    // console.log('lib', { this: this });
 //   }
-//   const options = {
-//     ...config.database,
-//     console,
-//     model: application.schemas.model,
-//   };
-//   const database = new metarhia.metasql.Database(options);
+  const options = {
+    ...config.database,
+    console,
+    // model: application.schemas.model,
+  }; 
+  // console.log({ domain });
 
-//   lib.db.connection = database;
-//   application.emit('bootstrap-db');
-
+  const database = new metarhia.metasql.Database(options);
+  // 
+    // lib.db.connection = database;
+  //   application.emit('bootstrap-db');
+  
+  // console.log({ context, database });
 //   if (application.worker.id === 'W1') {
-//     const {
-//       rows: [{ now }],
-//     } = await lib.db.connection.query(`SELECT now()`);
-//     console.info(`Connected to pg at ${new Date(now).toLocaleTimeString()}`);
+  const {
+    rows: [{ now }],
+  } = await database.query(`SELECT now()`);
+  console.log(`Connected to pg at ${new Date(now).toLocaleTimeString()}`);
 //   }
-// };
+  return database;
+};

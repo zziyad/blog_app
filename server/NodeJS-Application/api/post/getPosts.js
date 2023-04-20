@@ -4,6 +4,8 @@
 
     const { Database } = metarhia.metasql;
     const db = new Database(config.database);
+
+    
     try {
       const res = !category ? await db.select('Post', ['*'])
         : await db.select('Post', ['*'], { category }); 

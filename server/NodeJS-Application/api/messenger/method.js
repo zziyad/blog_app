@@ -1,4 +1,8 @@
-async ({ arg }) => {
-  console.log({ method: 'messenger.method', arg });
-  return { status: 'ok' };
-};
+({
+  access: 'public',
+  method: async (file) => {
+    domain.data.container.connection = context
+    console.log(await domain.data.test());
+    return { status: 'ok' };
+  },
+})

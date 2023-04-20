@@ -16,9 +16,10 @@
     "common": "readonly",
     "domain": "readonly",
     "lib": "readonly",
-    "metasql": "readonly",
     "config": "readonly",
-    "metautil": "readonly"
+    "npm": "readonly",
+    "node": "readonly",
+    "metarhia": "readonly"
   },
   "rules": {
     "id-denylist": [
