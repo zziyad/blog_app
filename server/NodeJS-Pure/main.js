@@ -31,17 +31,8 @@ const domainPath = path.join(appPath, './domain');
   sandbox.db = Object.freeze(db);
   sandbox.config = config;
 
-  // const lib = await loadDir(libPath, sandbox);
-  // const domain = await loadDir(domainPath, sandbox);
-  await Promise.allSettled([
-    (async () => {
-      sandbox.lib = Object.freeze(await loadDir(libPath, sandbox));
-      sandbox.domain = Object.freeze(await loadDir(domainPath, sandbox));
-    })(),
-  ]);
-
-  // sandbox.lib = Object.freeze(await loadDir(libPath, sandbox));
-  // sandbox.domain = Object.freeze(await loadDir(domainPath, sandbox));
+  sandbox.lib = Object.freeze(await loadDir(libPath, sandbox));
+  sandbox.domain = Object.freeze(await loadDir(domainPath, sandbox));
 
   const routing = await loadDir(apiPath, sandbox, true);
   const server = new Server(appPath, routing, logger);

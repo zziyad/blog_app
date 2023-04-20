@@ -123,6 +123,6 @@ export class Scaffold {
 
 
 
-const scaffolding = new Scaffold(`ws://localhost:8001`);
+const scaffolding = new Scaffold(`ws://localhost:8008`);
 
 export default scaffolding;

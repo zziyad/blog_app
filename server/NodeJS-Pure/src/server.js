@@ -31,7 +31,7 @@ class Context {
 class Client extends EventEmitter {
   #transport;
 
-  constructor(server, transport) {
+  constructor(transport) {
     super();
     this.#transport = transport;
     this.ip = transport.ip;
@@ -118,7 +118,7 @@ class Server {
         return;
       }
       const transport = new HttpTransport(console, req, res);
-      const client = new Client(console, transport);
+      const client = new Client(transport);
       const data = await receiveBody(req);
       this.rpc(client, data);
 
@@ -173,8 +173,8 @@ class Server {
     if (client.session) this.console.log({ clientSession: client.session });
     if (proc().access === 'public')
       this.console.log('Yo have not Admin access');
-    this.console.log(`${client.ip}\t${packet.method}`);
 
+    this.console.log(`${client.ip}\t${packet.method}`);
     proc(context)
       .method(...packet.args)
       .then((result) => {
