@@ -3,7 +3,7 @@
   method: async ({ username, email, password }) => {
     const { Database } = metarhia.metasql;
     const db = new Database(config.database);
-    const { errors, valid } = await domain.Validate.
+    const { errors, valid } = await lib.Validate.
       registerScheme({ username, email, password });
 
     if (!valid) return { status: 'rejected', reason: errors[0].split(':')[1] };
