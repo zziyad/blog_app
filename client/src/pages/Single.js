@@ -5,7 +5,7 @@ import scaffolding from '../system/client';
 import { AuthContext } from '../context/authContext';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
-
+import Comment from '../components/comments/Comment';
 const { api } = scaffolding;
 
 
@@ -92,6 +92,9 @@ const Single = () => {
          </div>
          <h1>{post.title}</h1>
         <div dangerouslySetInnerHTML={{ __html: post.descr }} />
+        <div>
+       <Comment/>
+        </div>
        </div>
        <div className='menu'>
          <Menu />

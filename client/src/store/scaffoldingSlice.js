@@ -5,13 +5,14 @@ const { api } = scaffolding;
 
 export const loadData = createAsyncThunk(
   'scaffolding/loadData',
-  async ({ type, method, args = {} }) => {
+  async ({ type, method, args = null }) => {
     await scaffolding.load(type);
-    const response = args === {} ? await api[type][method]() :
+    const response = args === null ? await api[type][method]() :
       await api[type][method](args);
     return response;
   }
 );
+
 
 
 const scaffoldingSlice = createSlice({
