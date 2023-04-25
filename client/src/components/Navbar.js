@@ -21,7 +21,7 @@ const Navbar = () => {
       <div className='container'>
         <div className='logo'>
           <Link className='link' to='/'>
-            <img src='/image/logo.png' alt='logo' />
+            <img src='/logo.png' alt='logo' />
           </Link>
         </div>
         <form onSubmit={(e) => e.preventDefault()}>

@@ -80,13 +80,13 @@ const Single = () => {
            </div>
           {!!currentUser && currentUser.username === post.username ? <div className='edit'>
              <Link to={`/write?edit=${postid}`} state={post}>
-               <img src='/image/edit.png' alt='' />
+               <img src='/edit.png' alt='' />
              </Link>
              <button
                style={{ border: 'none', backgroundColor: 'white' }}
                onClick={() => handelDelete(postid)}
              >
-               <img src='/image/delete.png' alt='' />
+               <img src='/delete.png' alt='' />
              </button>
            </div> : <></>}
          </div>
