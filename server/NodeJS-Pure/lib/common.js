@@ -106,11 +106,11 @@ const nowDateTimeUTC = (date, timeSep = ':') => {
   return `${yyyy}-${mm}-${dd}T${hh}${timeSep}${min}${timeSep}${ss}`;
 };
 
-module.exports = {
+module.exports = Object.freeze({
   hash,
   validatePassword,
   jsonParse,
   receiveBody,
   nowDate,
   nowDateTimeUTC,
-};
+});
