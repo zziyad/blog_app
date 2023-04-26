@@ -12,7 +12,7 @@ const Navbar = () => {
 
 
   useEffect(() => {
-    emitter.emit('search', {query, searcValue});
+    emitter.emit('search', { query, searcValue });
   }, [query, searcValue]);
   
 
@@ -36,9 +36,8 @@ const Navbar = () => {
             value={searcValue}
             disabled={!query}
             onChange={(e) => setSearchValue(e)}
-            defaultValue=""
+            defaultValue="title"
             options={[
-              { value: "title", name: "title" },
               { value: "descr", name: "description" }
             ]}
             />

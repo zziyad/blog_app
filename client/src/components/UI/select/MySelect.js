@@ -13,7 +13,6 @@ const MySelect = ({ options, defaultValue, value, onChange }) => {
       </option>
 
       {options.map((ops) => (
-
         <option key={ops.value} value={ops.value}>{ops.name}</option>
       ))}
     </select>
