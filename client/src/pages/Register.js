@@ -7,7 +7,7 @@ const Register = () => {
 
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({ username: '', email: '', password: '' });
-  const [err, setError] = useState(null);
+  const [error, setError] = useState({ status: '', reason: null});
 
   const handelChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -18,10 +18,11 @@ const Register = () => {
     try {
       await scaffolding.load('auth');
       const res = await scaffolding.api.auth.register(inputs);
-      if (res.status === 'rejected') return setError(res.reason);
+      if (res.status === 'rejected') return setError(res);
       navigate('/login');
     } catch (error) {
-      setError(error);
+      setError({ status: 'rejected', reason:error.message})
+
     }
   }
 
@@ -34,7 +35,7 @@ const Register = () => {
         <input required type='text' placeholder='email' name='email' onChange={handelChange} />
         <input required type='password' placeholder='password' name='password' onChange={handelChange} />
         <button onClick={handleSubmit}>Register</button>
-        {err && <p>{err}</p>}
+        {error.status === 'rejected' && <p>{error.reason}</p>}
         <span>
           Do you have an account? <Link to='/login'>Login</Link>
         </span>

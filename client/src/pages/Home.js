@@ -10,6 +10,7 @@ const Home = React.memo(() => {
   const [searchValue, setSearchValue] = useState('');
   const [serchBy, setSearchBy] = useState('')
   const [result, setResult] = useState([])
+  const [error, setError] = useState({ status: '', reason: null});
 
   const debounce = useDebounce(searchValue, 500); 
   const [, category] = useLocation().search.split('=');
@@ -36,10 +37,11 @@ const search = useMemo(() => {
       const param = category ? category : false;
       try {
         await scaffolding.load('post');
-        const { result } = await api.post.getPosts(param);
-        setResult(result)
+        const res = await api.post.getPosts(param);
+        res.result ? setResult(res.result) :
+          setError(res)
       } catch (error) {
-        console.log(error);
+        setError({ status: 'rejected', reason:error.message})
       }
     }
     getPosts();
@@ -67,6 +69,11 @@ const search = useMemo(() => {
   }, []);
 
   return (
+    error.status === 'rejected' ? 
+    <h1 style={{textAlign:'center'}}>
+      <span style={{color:'red'}}>{error.reason.code}</span> - {error.reason.message}
+      </h1> :
+      <>
     <div className='home'>
       <div className='posts'>
         {posts.map((post) => (
@@ -92,6 +99,7 @@ const search = useMemo(() => {
         ))}
       </div>
     </div>
+    </>
   )
 })
 

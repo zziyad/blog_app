@@ -13,7 +13,7 @@ export const AuthContextProvider = ({ children }) => {
   const login = async (inputs) => {
     await scaffolding.load('auth');
     const res = await scaffolding.api.auth.signin(inputs);
-    if (res.status === 'rejected') return { err: res.reason };
+    if (res.status === 'rejected') return  res;
     setCurrentUser(res.result);
     return res;
   }

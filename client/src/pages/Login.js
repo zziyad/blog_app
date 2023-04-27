@@ -8,7 +8,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const [inputs, setInputs] = useState({ username: '', password: '' });
-  const [err, setError] = useState(null);
+  const [error, setError] = useState({ status: '', reason: null});
 
 
   const handelChange = (e) => {
@@ -19,11 +19,12 @@ const Login = () => {
     e.preventDefault();
     try {      
       const res = await login(inputs);
-      if (res.err) return setError(res.err);
-      document.cookie =  res.token
+      if (res.reason) return setError(res);
+      document.cookie = res.token;
       navigate('/');
     } catch (error) {
-      setError(error);
+      setError({ status: 'rejected', reason:error.message})
+
     }
   }
 
@@ -35,7 +36,7 @@ const Login = () => {
         <input required type='text' placeholder='username' name='username' onChange={handelChange} />
         <input required type='password' placeholder='password' name='password' onChange={handelChange} />
         <MyButton onClick={handleSubmit}>Login</MyButton>
-        {err && <p>{err}</p>}
+        {error.status === 'rejected' && <p>{error.reason}</p>}
         <span>
           Don't you have an account? <Link to='/register'>Register</Link>
         </span>

@@ -5,7 +5,6 @@ import scaffolding from '../system/client';
 import { AuthContext } from '../context/authContext';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
-
 const { api } = scaffolding;
 
 
@@ -28,7 +27,7 @@ const Single = () => {
         if (res.result) setPost(res.result);
         else setError(res)
       } catch (error) {
-        console.log(error);
+        setError({ status: 'rejected', reason:error.message})
       }
     }
     getPost();
@@ -41,8 +40,8 @@ const Single = () => {
       await api.post.deletePost(id);
       alert('Your Post was Deleted');
       navigate("/")
-    } catch (err) {
-      setError({ ...error, reason: err })
+    } catch (error) {
+      setError({ status: 'rejected', reason:error.message})
     }
   }
 
@@ -67,13 +66,16 @@ const Single = () => {
   const postedDate = new Date(post.date).toString().substr(0, 21);
 
   return (
-  error.status === 'rejected' ? <h1 style={{textAlign:'center'}}><span style={{color:'red'}}>{error.reason.code}</span> - {error.reason.message}</h1> :
+  error.status === 'rejected' ? 
+    <h1 style={{textAlign:'center'}}>
+      <span style={{color:'red'}}>{error.reason.code}</span> - {error.reason.message}
+      </h1> :
      <div className='single'>
        {/* { error ||  */}
        <div className='content'>
          <img src={post.image} alt='' />
          <div className='user'>
-           <img src='https://images.pexels.com/photos/6489663/pexels-photo-6489663.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' alt='' />
+           <img src='/user-icon.png' alt='' />
            <div className='info'>
              <span>{post.username}</span>
              <p>Posted: {postedDate}</p>
