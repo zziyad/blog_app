@@ -17,7 +17,7 @@ const Write = () => {
   const [title, setTitle] = useState(state?.title || '');
   const [file, setFile] = useState(null);
   const [category, setCategory] = useState(state?.category || '');
-  const [error, setError] = useState(null);
+  const [error, setError] = useState({ status: '', reason: null});
   const [value, setValue] = useState(state?.descr || '');
 
   // Reads the selected file and calls the callback with the result
@@ -30,14 +30,14 @@ const Write = () => {
 
   // Uploads the post to the server
   const uploadPost = async (post) => {
+    console.log({ post });
     await scaffolding.load('post');
     const method = state ? api.post.updatePost : api.post.addPost;
     try {
       const pid = await method(post);
       navigate(`/post/${state ? state.postid : pid.result}`);
     } catch (error) {
-      console.log({ error });
-      setError(error);
+      setError({ status: 'rejected', reason:error.message})
     }
   }
 
@@ -63,7 +63,6 @@ const Write = () => {
           await scaffolding.load('upload');
           const call = await api.upload.file({ name: file.name, data: res });
           if (call.status === 'rejected') return setError(call.result);
-          console.log('here');
           post.image = call.result;
           await uploadPost(post);
         } catch (error) {
@@ -83,6 +82,10 @@ const Write = () => {
 
 
   return (
+    error.status === 'rejected' ? 
+    <h1 style={{textAlign:'center'}}>
+      <span style={{color:'red'}}>{error.reason.code}</span> - {error.reason.message}
+      </h1> :
     <div className='add'>
       <div className='content'>
         <input type='text' value={title} placeholder='Title' onChange={(e) => setTitle(e.target.value)} />
