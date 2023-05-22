@@ -1,19 +1,15 @@
-import {
-  createBrowserRouter,
-  Outlet,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 
-import Register from './pages/Register'
-import Home from './pages/Home'
-import Login from './pages/Login'
-import Single from './pages/Single'
-import Write from './pages/Write'
+import Register from "./pages/Register";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Single from "./pages/Single";
+import Write from "./pages/Write";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import "./style.scss";
 import User from "./pages/User";
-
+import { PostProvider } from "./context/postContex";
 
 const Loyaut = () => {
   return (
@@ -22,53 +18,54 @@ const Loyaut = () => {
       <Outlet />
       <Footer />
     </>
-  )
-}
-
+  );
+};
 
 const router = createBrowserRouter([
   {
     path: "/",
-    errorElement:
+    errorElement: (
       <h1
         style={{
-          textAlign: 'center',
-          marginTop: '50px'
+          textAlign: "center",
+          marginTop: "50px",
         }}
       >
         NOT FOUND
-      </h1>,
+      </h1>
+    ),
     element: <Loyaut />,
     children: [
       {
         path: "/",
-        element: <Home />
+        element: <Home />,
       },
       {
         path: "/post/:id",
-        element: <Single />
+        element: (
+          <PostProvider>
+            <Single />
+          </PostProvider>
+        ),
       },
       {
         path: "/user",
-        element: <User />
+        element: <User />,
       },
       {
         path: "/write",
-        element: <Write />
+        element: <Write />,
       },
       {
         path: "/register",
-        element: <Register />
+        element: <Register />,
       },
       {
         path: "/login",
-        element: <Login />
+        element: <Login />,
       },
-    ]
-
+    ],
   },
- 
-
 ]);
 
 function App() {

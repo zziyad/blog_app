@@ -17,7 +17,11 @@ const structure = {
   },
   upload: {
     file: [],
-  }
+  },
+  comment: {
+    getComment: ['postid'],
+    addComment: ['body', 'user_id', 'post_id' ]
+  } 
 };
 
 

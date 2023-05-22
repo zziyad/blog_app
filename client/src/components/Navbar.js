@@ -38,7 +38,7 @@ const Navbar = () => {
             onChange={(e) => setSearchValue(e)}
             defaultValue="title"
             options={[
-              { value: "descr", name: "description" }
+              { value: "body", name: "body" }
             ]}
             />
 
@@ -65,7 +65,7 @@ const Navbar = () => {
           <br />
           <span>
             <Link className='link' to='/user'>
-              {currentUser?.username}
+              {currentUser?.name}
             </Link>
           </span>
           {
