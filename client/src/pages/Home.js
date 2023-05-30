@@ -16,7 +16,6 @@ const Home = React.memo(() => {
 
   const { search, serchBy, setSearchBy } = useSearch();
   const debounce = useDebounce(searchValue, DELAY_TIME);
-  console.log({ category });
   const { loading, error, value, status } = useAsync(
     () => getPosts(category || null),
     [category || null]
@@ -49,7 +48,7 @@ const Home = React.memo(() => {
   if (error || !value || status === "rejected") {
     return <h1>{error}</h1>;
   }
-  console.log({ posts });
+
   return (
     <div className="home">
       {posts?.length === 0 ? (

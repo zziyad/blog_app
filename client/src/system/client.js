@@ -1,29 +1,28 @@
 const structure = {
   auth: {
-    register: ['email', 'username', 'password'],
-    signin: ['login', 'password'],
+    register: ["email", "username", "password"],
+    signin: ["login", "password"],
     signout: [],
-    restore: ['token'],
+    restore: ["token"],
   },
   messenger: {
-    method: ['arg'],
+    method: ["arg"],
   },
   post: {
     getPosts: [],
-    getPost: ['postid'],
-    updatePost: ['post'],
-    addPost: ['post'],
-    deletePost: ['postid']
+    getPost: ["postid"],
+    updatePost: ["post"],
+    addPost: ["post"],
+    deletePost: ["postid"],
   },
   upload: {
     file: [],
   },
   comment: {
-    getComment: ['postid'],
-    addComment: ['body', 'user_id', 'post_id' ]
-  } 
+    getComment: ["postid"],
+    addComment: ["body", "user_id", "post_id"],
+  },
 };
-
 
 class ScaffoldError extends Error {
   constructor(message, code) {
@@ -57,7 +56,7 @@ export class Scaffold {
     this.api = {};
     this.callId = 1;
     this.calls = new Map();
-    this.socket.addEventListener('message', ({ data }) => {
+    this.socket.addEventListener("message", ({ data }) => {
       this.message(data);
     });
   }
@@ -70,7 +69,7 @@ export class Scaffold {
       console.error(err);
       return;
     }
-    const [, callId , args] = Object.keys(packet);
+    const [, callId, args] = Object.keys(packet);
     const id = packet[callId];
     const result = packet[args];
     if (result) {
@@ -91,7 +90,7 @@ export class Scaffold {
   ready() {
     return new Promise((resolve) => {
       if (this.socket.readyState === WebSocket.OPEN) resolve();
-      else this.socket.addEventListener('open', resolve);
+      else this.socket.addEventListener("open", resolve);
     });
   }
 
@@ -111,22 +110,26 @@ export class Scaffold {
   }
 
   socketCall(unitName) {
-    const unit = unitName
+    const unit = unitName;
     return (methodName) =>
       async (...args) => {
         const id = this.callId++;
         await this.ready();
         return new Promise((resolve, reject) => {
           this.calls.set(id, [resolve, reject]);
-          const packet = { type: 'call', id, method: `${unit}/${methodName}`, args };
+          const packet = {
+            type: "call",
+            id,
+            method: `${unit}/${methodName}`,
+            args,
+          };
+          console.log({ packet });
           this.socket.send(JSON.stringify(packet));
         });
       };
   }
 }
 
-
-
-const scaffolding = new Scaffold(`ws://localhost:8008`);
+const scaffolding = new Scaffold(`ws://localhost:8080`);
 
 export default scaffolding;
