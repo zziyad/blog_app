@@ -2,8 +2,8 @@
   Entity: {},
 
   title: { type: 'string', unique: true },
-  desc: 'string',
-  img: 'string',
-  date: 'date',
-  uid: 'User',
+  body: 'text',
+  createdAt: { type: 'datetime', default: 'now' },
+  updatedAt: { type: 'datetime', default: 'now' },
+  author: { type: 'Account', delete: 'cascade' },
 });
