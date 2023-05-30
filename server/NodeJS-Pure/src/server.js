@@ -112,7 +112,7 @@ class Server {
     this.httpServer = http.createServer();
     const [port] = config.server.ports;
     this.listen(port);
-    console.log(`API on port ${port}`);
+    console.system(`API on port ${port}`);
   }
 
   listen(port) {
@@ -163,7 +163,7 @@ class Server {
     }
     /* TODO: resumeCookieSession(); */
     const [unit, method] = packet.method.split('/');
-    const proc = this.routing[unit][method];
+    const proc = this.routing.get(unit + '.' + method);
     if (!proc) {
       client.error(404, { id });
       return;
@@ -176,8 +176,8 @@ class Server {
     }
     if (client.session) this.console.log({ clientSession: client.session });
     if (proc().access === 'public')
-      this.console.log('Yo have not Admin access');
-    this.console.log(`${client.ip}\t${packet.method}`);
+      this.console.access('Yo have not Admin access');
+    this.console.system(`${client.ip}\t${packet.method}`);
     proc(context)
       .method(...packet.args)
       .then((result) => {
