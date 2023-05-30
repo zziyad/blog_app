@@ -1,38 +1,42 @@
 'use strict';
 
+const fsp = require('node:fs').promises;
 const path = require('node:path');
-
+const vm = require('node:vm');
 const console = require('./lib/logger.js');
 const common = require('./lib/common.js');
 const { node, npm, metarhia } = require('./src/dependencies.js');
-
-const { loadDir } = require('./src/loader.js');
+const { loadDir, createRouting, starts } = require('./src/loader.js');
 const { Server } = require('./src/server.js');
 
-const appPath = path.join(process.cwd(), '../NodeJS-Application');
-
-const api = Object.freeze({});
-const sandbox = {
-  console, common, api, node, npm, metarhia, db: null, lib: {}, domain: {}
-};
+const sandbox = vm.createContext({
+  console, common, npm, node, metarhia, db: null
+});
 
 (async () => {
+  const applications = await fsp.readFile('.applications', 'utf8');
+  const appPath = path.join(process.cwd(), applications.trim());
+
   const configPath = path.join(appPath, './config');
-  const libPath = path.join(appPath, './lib');
-  const domainPath = path.join(appPath, './domain');
-
   const config = await loadDir(configPath, sandbox);
-  const db = require('./lib/db.js')(config.db);
 
-  sandbox.db = Object.freeze(db);
-  sandbox.config = config;
+  const libPath = path.join(appPath, './lib');
+  const lib = await loadDir(libPath, sandbox);
 
-  sandbox.lib = Object.freeze(await loadDir(libPath, sandbox));
-  sandbox.domain = Object.freeze(await loadDir(domainPath, sandbox));
+  const domainPath = path.join(appPath, './domain');
+  const domain = await loadDir(domainPath, sandbox);
+
+  // sandbox.db = require('./lib/db.js');
 
   const apiPath = path.join(appPath, './api');
-  const routing = await loadDir(apiPath, sandbox, true);
-
-  const application = { path: appPath, sandbox, console, config, routing };
+  const api = await loadDir(apiPath, sandbox, true);
+  const routing = createRouting(api);
+  const application = {
+    path: appPath, sandbox, console, routing, config, starts
+  };
+  Object.assign(sandbox, { api, lib, domain, config, application });
   application.server = new Server(application);
+  // starts functions execut on starts of application
+  application.starts.map((fn) => common.execute(fn));
+  application.starts = [];
 })();
