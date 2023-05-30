@@ -1,7 +1,7 @@
 'use strict';
 
 const crypto = require('node:crypto');
-
+const hashTable = require('./hashTable.js');
 const SCRYPT_PARAMS = { N: 32768, r: 8, p: 1, maxmem: 64 * 1024 * 1024 };
 const SCRYPT_PREFIX = '$scrypt$N=32768,r=8,p=1,maxmem=67108864$';
 
@@ -106,11 +106,20 @@ const nowDateTimeUTC = (date, timeSep = ':') => {
   return `${yyyy}-${mm}-${dd}T${hh}${timeSep}${min}${timeSep}${ss}`;
 };
 
+const execute = (method) =>
+  method().catch((error) => {
+    const msg = `Failed to execute method: ${error?.message}`;
+    console.error(msg, error.stack);
+    return Promise.reject(error);
+  });
+
 module.exports = Object.freeze({
   hash,
+  hashTable,
   validatePassword,
   jsonParse,
   receiveBody,
   nowDate,
   nowDateTimeUTC,
+  execute,
 });
